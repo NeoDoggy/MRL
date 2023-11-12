@@ -14,25 +14,32 @@ def main():
     pub = rospy.Publisher("visualization_marker", Marker, queue_size=1)
     shape = Marker.CUBE
     nowx=0
-    last=[]
+    last=["0 0"]
     while not rospy.is_shutdown():
         data = open("./box.txt", "r")
         datas=data.readlines()
-        if datas==[]:
-            print(last)
-            datas=last
-        last=datas
-        datas=datas[0].split(' ')
         marker = Marker()
-        marker.header.frame_id = "base_scan"
+        marker.header.frame_id = "laser_link"
         marker.header.stamp = rospy.Time.now()
         marker.ns = "box"
         marker.id = 1
         marker.type = shape
         marker.action = Marker.ADD
+        if datas==[]:
+            marker.color.a = 1.0
+            print(last)
+            datas=last
+        elif datas[0]=="-1":
+            marker.color.a = 0.0
+            print(last)
+            datas=last
+        else:
+            marker.color.a = 1.0
+            last=datas
+        datas=datas[0].split(' ')
         marker.pose.position.x = float(datas[0])
         marker.pose.position.y = float(datas[1])
-        marker.pose.position.z = float(datas[2])
+        marker.pose.position.z = 0.1
         quat=quaternion_from_euler(0,0,toPOL(float(datas[0]),float(datas[1])))
         marker.pose.orientation.x = quat[0]
         marker.pose.orientation.y = quat[1]

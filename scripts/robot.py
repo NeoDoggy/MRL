@@ -12,7 +12,7 @@ def main():
     nowROL=0
     while not rospy.is_shutdown():
         marker = Marker()
-        marker.header.frame_id = "base_scan"
+        marker.header.frame_id = "laser_link"
         marker.header.stamp = rospy.Time.now()
         marker.ns = "robo"
         marker.id = 0

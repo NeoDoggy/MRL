@@ -9,26 +9,33 @@ def main():
     rate = rospy.Rate(30)
     pub = rospy.Publisher("visualization_marker", Marker, queue_size=1)
     shape = Marker.SPHERE
-    last=[]
+    last=["0 0"]
     # nowy=0
     while not rospy.is_shutdown():
-        data = open("./ball.txt", "r")
-        datas=data.readlines()
-        if datas==[]:
-            print(last)
-            datas=last
-        last=datas
-        datas=datas[0].split(' ')
         marker = Marker()
-        marker.header.frame_id = "base_scan"
+        marker.header.frame_id = "laser_link"
         marker.header.stamp = rospy.Time.now()
         marker.ns = "ball"
         marker.id = 0
         marker.type = shape
         marker.action = Marker.ADD
+        data = open("./ball.txt", "r")
+        datas=data.readlines()
+        if datas==[]:
+            marker.color.a = 1.0
+            print(last)
+            datas=last
+        elif datas[0]=="-1":
+            marker.color.a = 0.0
+            print(last)
+            datas=last
+        else:
+            marker.color.a = 1.0
+            last=datas
+        datas=datas[0].split(' ')
         marker.pose.position.x = float(datas[0])
         marker.pose.position.y = float(datas[1])
-        marker.pose.position.z = float(datas[2])
+        marker.pose.position.z = 0.1
         marker.pose.orientation.x = 0.0
         marker.pose.orientation.y = 0.0
         marker.pose.orientation.z = 0.0
@@ -39,7 +46,6 @@ def main():
         marker.color.r = 1.0
         marker.color.g = 1.0
         marker.color.b = 1.0
-        marker.color.a = 1.0
         marker.lifetime = rospy.Duration()
         while pub.get_num_connections() < 1: 
             if rospy.is_shutdown():

@@ -21,4 +21,4 @@ The demo could be watched here->https://www.youtube.com/watch?v=AMILja1kTgw&t=59
 └── src/
     └── main.cpp //the main file for collectiong data from th bot
 ```
-![System Flow Chart]([http://url/to/img.png](https://i.imgur.com/Wj9xXqc.png))
+![System Flow Chart](https://i.imgur.com/Wj9xXqc.png)
